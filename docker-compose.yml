@@ -1,13 +1,37 @@
-version: "3.9"  
+version: "3.9"   
 services:
 
-  web:
-    image: web:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+  server:
+    container_name: server_container
+    image: server:latest
+    build: server/
     ports:
       - "8000:8000"
     # volumes:  # Mount volume 
     #   - .:/app
   
+  client:
+    container_name: client_container
+    image: client:latest
+    build: client/
+    depends_on:
+      - server
+    ports:
+      - "5555:5555"
+    tty: true # docker run -t
+    stdin_open: true # docker run -i
+    network_mode: host # define that the container can access to the 'localhost' of the computer
+      
+  # client2:
+  #   image: client:latest
+  #   build: client/
+  # nginx:
+  #   image: nginx:latest
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./nginx_config.conf:/etc/nginx/conf.d/default.conf
+  #   depends_on:
+  #     - server
+  #     - client
+   

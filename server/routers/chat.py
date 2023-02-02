@@ -1,20 +1,16 @@
 from fastapi import APIRouter, HTTPException, status, Body
-from pydantic import BaseModel
-from app.logging import log
+from routers.models import Message
+from logger import log
 
 router = APIRouter(
     prefix="/chat",
     tags=["chat"]
 )
 
-class Message(BaseModel):
-    username: str
-    message: str
-
 msg_list = []
 
 @router.post("/message", status_code=status.HTTP_201_CREATED, description="user sends request with username and message")
-async def send_message(msg: Message = Body(
+def send_message(msg: Message = Body(
         example={
             "username": "AdiE",
             "message": "Hi all",
@@ -36,7 +32,7 @@ async def send_message(msg: Message = Body(
         raise HTTPException(status_code=500, detail="failed send message") 
 
 @router.get("/messages", description="User retrieves a list of all previous messages")
-async def get_messages() -> list[Message]:
+def get_messages() -> list[Message]:
     """
     Get msg_list
     :return: 200 OK with msg_list
