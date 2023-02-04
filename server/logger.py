@@ -5,7 +5,7 @@ def set_log_configurations():
     """
     set the log level by default info and determine colors and format log output
     """
-    log_level = "INFO"
+    log_level = "DEBUG"
     logger = loguru_logger
     logger.remove()  # Default "sys.stderr" sink is not picklable
 

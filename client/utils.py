@@ -14,3 +14,8 @@ class SendMsgException(Exception):
 
 
 CHAT_SERVER = "http://localhost:8000"
+
+
+class User(BaseModel):
+    username: str
+    room_name: str
