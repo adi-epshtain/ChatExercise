@@ -10,5 +10,8 @@ RUN pip install -r /client/requirements.txt
 
 COPY . .
 
+EXPOSE 5555
+
 # run the client
-CMD ["python", "./main.py"]
+CMD ["python", "./main.py", "-it"]
+

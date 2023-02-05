@@ -3,7 +3,7 @@ from routers.utils import Message as MessageData
 from logger import log
 from bl.chat import ChatBL
 
-router = APIRouter(prefix="/chat/v2", tags=["chat v2"])
+router = APIRouter(prefix="/chat/v2", tags=["Chat V2 - Messages"])
 
 
 @router.post("/message", status_code=status.HTTP_201_CREATED, description="user sends request with username and message")

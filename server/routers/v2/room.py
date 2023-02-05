@@ -3,7 +3,7 @@ from logger import log
 from bl.chat import ChatBL
 from logger import log
 
-router = APIRouter(prefix="/room/v2", tags=["room v2"])
+router = APIRouter(prefix="/chat/v2", tags=["Chat V2 - Rooms"])
 
 
 @router.get("/rooms", description="User retrieves a list of all previous messages")

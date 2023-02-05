@@ -6,7 +6,7 @@
     "configurations": [
 
         {
-            "name": "Python: FastAPI",
+            "name": "Python: FastAPI server",
             "type": "python",
             "request": "launch",
             "module": "uvicorn",
@@ -19,7 +19,13 @@
                 "--reload"
             ],
             "jinja": true,
-            // "justMyCode": true,
-        }
+        },
+        {
+            "name": "client",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/client/main.py",
+            "cwd": "${workspaceRoot}/client",
+        },
     ]
 }

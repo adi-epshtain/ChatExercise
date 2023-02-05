@@ -4,7 +4,6 @@ from routers.v1.message import router as routerMessageV1
 from routers.v2.message import router as routerMessageV2
 from routers.v2.user import router as routerUserV2
 from routers.v2.room import router as routerRoomV2
-
 from logger import log
 
 def create_app() -> FastAPI:

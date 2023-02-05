@@ -4,7 +4,7 @@ from logger import log
 from bl.chat import ChatBL
 from logger import log
 
-router = APIRouter(prefix="/user/v2", tags=["user v2"])
+router = APIRouter(prefix="/chat/v2", tags=["Chat V2 - Users"])
 
 
 @router.post("/user", status_code=status.HTTP_201_CREATED, description="get or create a new user on specfic room")

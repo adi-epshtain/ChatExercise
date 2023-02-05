@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status, Body
 from routers.utils import Message as MessageData
 from logger import log
 
-router = APIRouter(prefix="/chat/v1", tags=["chat v1"])
+router = APIRouter(prefix="/chat/v1", tags=["Chat V1 -Message"])
 
 msg_list = []
 

@@ -7,23 +7,28 @@ services:
     build: server/
     ports:
       - "8000:8000"
+    expose:
+      - 8000
     depends_on:
       - db
-    # volumes:  # Mount volume 
-    #   - .:/app
   
-  client:
-    container_name: client_container
-    image: client:latest
-    build: client/
-    depends_on:
-      - server
-    ports:
-      - "5555:5555"
-    tty: true # docker run -t
-    stdin_open: true # docker run -i
-    network_mode: host # define that the container can access to the 'localhost' of the computer
-      
+  # if you want to interactive with CLI client then run the client image mannually with no docker compose:
+  # docker build -t client_image .
+  # docker run -it client_image
+  
+  # client:
+  #   container_name: client_container
+  #   image: client:latest
+  #   build: client/
+  #   depends_on:
+  #     - server
+  #   ports:
+  #     - "5555:5555"
+  #   tty: true # docker run -t
+  #   stdin_open: true # docker run -i
+  #   network_mode: host # define that the container can access to the 'localhost' of the computer
+  #   command: ["python", "./main.py", "-it"]      
+  
   # client2:
   #   image: client:latest
   #   build: client/
@@ -38,7 +43,7 @@ services:
   #     - client
    
   db:
-    container_name: postgres
+    container_name: postgres_container
     image: postgres:15-alpine
     restart: always
     volumes:
@@ -59,9 +64,19 @@ services:
        interval: 5s
        timeout: 5s
        retries: 5
-  # pgadmin:
-  #   ports:
-  #     - "5050:5050"  
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: adi.epshtain@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: postgres  
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
     
 volumes:
   postgres_data:
+  pgadmin-data:

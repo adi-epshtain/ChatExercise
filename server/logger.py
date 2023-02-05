@@ -1,11 +1,15 @@
-from loguru import logger as loguru_logger
 import sys
+import os
+from loguru import logger as loguru_logger
+from dotenv import load_dotenv
+from constants import DEBUG
 
 def set_log_configurations():
     """
-    set the log level by default info and determine colors and format log output
+    set the log level by envierment variable or by default info and determine colors and format log output
     """
-    log_level = "DEBUG"
+    load_dotenv()  # take environment variables from .env.
+    log_level = os.getenv("LOG_LEVEL", DEBUG)
     logger = loguru_logger
     logger.remove()  # Default "sys.stderr" sink is not picklable
 
