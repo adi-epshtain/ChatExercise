@@ -1,3 +1,4 @@
+""" This code is version1 of chat BL using Rest API each 1 second get all messages and print them"""
 import time
 import json
 from logger import log

@@ -1,4 +1,5 @@
 SWAGGER_URL = "http://localhost:8000/api/docs"
+WEBSOCKET_URL = "ws://localhost:8000/chat/v2/ws"
 SECONDS_TO_SLEEP = 5 # return to 1 sec
 CHAT_SERVER = "http://localhost:8000"
 GET_MSG_URL= f"{CHAT_SERVER}/chat/v2/messages"
