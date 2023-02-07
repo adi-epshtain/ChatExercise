@@ -5,7 +5,6 @@ __pycache__/
 *$py.class
 
 # Environments
-.env
 env/
 
 # vscode settings:

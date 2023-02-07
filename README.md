@@ -5,10 +5,10 @@ Chat Server
 docker-compose build
 docker-compose up -d
 
-## 2. build the client docker image and run the docker container:
-### you may docker run 2 or x containers for getting x clients
+## 2. build the client docker image and run the 2 or more docker containers:
 docker build -t client_image .
-docker run --network=host -p 5555:5555 -it --name client_container client_image  
+docker run --network=host -p 5555:5555 -it --name client_container1 client_image
+docker run --network=host -p 5555:5555 -it --name client_container2 client_image    
 
 ## stop docke container & rm all images:
 docker-compose down
