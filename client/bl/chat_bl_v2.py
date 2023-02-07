@@ -1,51 +1,64 @@
 """ This code is version2 of chat BL using websocket"""
 import json
+import asyncio
 from logger import log
 from utils import User, Room, GetUserException, GetRoomException
 from proxy import ProxyUser, ProxyRoom
 from constants import WEBSOCKET_URL
-from websockets import connect, ConnectionClosed
+from websockets import connect
 
-def choose_room_name() -> str:
-    rooms_list_data_response: list[Room] = ProxyRoom.get_rooms()
-    if not rooms_list_data_response:
-        log.error("Thre are no rooms")
-        raise GetRoomException
+class ChatBLV2:
+    def __init__(self) -> None:
+        self.username = None
+        self.room_name = None
     
-    rooms_list: list[dict] = json.loads(rooms_list_data_response)
+    def init_username_and_room(self):
+        self.username: str = input("Hi there! Please insert your username:")
+        self.choose_room_name()
 
-    for room in rooms_list:
-        log.info(f"{room['id']}. {room['name']}")
-    
-    room_name: str = input("insert room name:")
-    return room_name
+        # debug only:
+        # self.username = "AdiE"
+        # self.room_name = "Backend"
+        
+        user = User(username=self.username, room_name=self.room_name)
+        user_obj = ProxyUser.get_or_create_user(user)
+        if not user_obj:
+            raise GetUserException
+        
 
-async def chat_client():
-    username: str = input("Hi there! Please insert your username:")
-    # room_name: str = choose_room_name()
-    room_name = "Backend"
-    # username, room_name = "AdiE", "Backend"
-    
-    user = User(username=username, room_name=room_name)
-    user_obj = ProxyUser.get_or_create_user(user)
-    if not user_obj:
-        raise GetUserException
-    
-    log.info(f"{username} Welcome to My chat")
-    
-    try:
-        websocket_url_with_params = f"{WEBSOCKET_URL}/{username}"
-        new_msg = input("Please insert your message:")
-        async with connect(websocket_url_with_params) as websocket:
-            while(True):
-                await websocket.send(new_msg)
-                new_msg = input("Please insert your message:")
-                msg_received = await websocket.recv()
-                log.info(msg_received)
+    def choose_room_name(self):
+        rooms_list_data_response: list[Room] = ProxyRoom.get_rooms()
+        if not rooms_list_data_response:
+            log.error("Thre are no rooms")
+            raise GetRoomException
+        
+        rooms_list: list[dict] = json.loads(rooms_list_data_response)
 
-    except ConnectionClosed:
-        log.error(f"chat server connection closed")                
-    except Exception as e:
-        log.error(f"chat client failed with error: {e}")
-        raise e
+        for room in rooms_list:
+            log.info(f"{room['id']}. {room['name']}")
+        
+        self.room_name: str = input("insert room name:")
+
+    async def chat_client(self):
     
+        self.init_username_and_room()
+        log.info(f"{self.username} Welcome to My chat")
+        
+        while True:
+            try:
+                websocket_url_with_params = f"{WEBSOCKET_URL}/{self.room_name}/{self.username}"
+                
+                async with connect(websocket_url_with_params) as websocket:
+                    while(True):
+                        new_msg = input("Please insert your message:")
+                        await websocket.send(new_msg)
+                        # new_msg = input("Please insert your message:")
+                        msg_received = await asyncio.wait_for(websocket.recv(), timeout=10)
+                        # msg_received = await websocket.recv()
+                        log.info(msg_received)            
+            except Exception as e:
+                log.warning(f"Websocket connection failed, error: {e}. Retrying reconnect in 1 second ...")
+                await asyncio.sleep(1)
+
+               
+        
