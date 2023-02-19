@@ -7,7 +7,7 @@ router = APIRouter(prefix="/chat/v2", tags=["Chat V2 - Rooms"])
 
 
 @router.get("/rooms", description="User retrieves a list of all previous messages")
-def get_rooms() -> list:
+async def get_rooms() -> list:
     """
     Get all rooms
     :return: 200 OK with msg_list
@@ -23,7 +23,7 @@ def get_rooms() -> list:
 
 
 @router.post("/room", status_code=status.HTTP_201_CREATED, description="create a new room")
-def add_user(name: str):
+async def add_user(name: str):
     """
     Adding a new room to rooms DB table
     :return: 201 Created with room object

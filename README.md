@@ -17,7 +17,7 @@ docker stop <container_name>
 docker rmi <image_id>
 
 ## open swagger getting API documentation:
-open URL: http://127.0.0.1:8000/docs
+open URL: http://127.0.0.1:8000/api/docs
 
 # working locally without docker (Windows  machine):
 

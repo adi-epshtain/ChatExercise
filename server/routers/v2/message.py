@@ -7,7 +7,7 @@ router = APIRouter(prefix="/chat/v2", tags=["Chat V2 - Messages"])
 
 
 @router.post("/message", status_code=status.HTTP_201_CREATED, description="user sends request with username and message")
-def send_message(msg: MessageData = Body(
+async def send_message(msg: MessageData = Body(
         example={
             "username": "AdiE",
             "message": "Hi all",
@@ -27,7 +27,7 @@ def send_message(msg: MessageData = Body(
         raise HTTPException(status_code=500, detail="failed send message") 
 
 @router.get("/messages", description="User retrieves a list of all previous messages")
-def get_messages(username: str) :#-> list[MessageData]:
+async def get_messages(username: str) :#-> list[MessageData]:
     """
     Get all messages related to user room
     :return: 200 OK with msg_list

@@ -8,7 +8,7 @@ router = APIRouter(prefix="/chat/v2", tags=["Chat V2 - Users"])
 
 
 @router.post("/user", status_code=status.HTTP_201_CREATED, description="get or create a new user on specfic room")
-def add_user(user: UserData = Body(
+async def add_user(user: UserData = Body(
         example={
             "username": "AdiE",
             "room_name": "AI",

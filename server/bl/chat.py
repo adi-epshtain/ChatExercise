@@ -1,6 +1,5 @@
 from routers.utils import Message as MessageData, User as UserData
 from logger import log
-import json
 from sql.dals.message import MessageDal
 from sql.dals.room import RoomDal
 from sql.dals.user import UserDal

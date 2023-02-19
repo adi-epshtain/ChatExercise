@@ -1,4 +1,4 @@
-""" This code is version2 of chat BL using websocket"""
+""" Version2 of chat BL using websocket"""
 import json
 import asyncio
 from logger import log
@@ -12,22 +12,22 @@ class ChatBLV2:
         self.username = None
         self.room_name = None
     
-    def init_username_and_room(self):
+    async def init_username_and_room(self):
         self.username: str = input("Hi there! Please insert your username:")
-        self.choose_room_name()
+        await self.choose_room_name()
 
         # debug only:
         # self.username = "AdiE"
         # self.room_name = "Backend"
         
         user = User(username=self.username, room_name=self.room_name)
-        user_obj = ProxyUser.get_or_create_user(user)
+        user_obj = await ProxyUser.get_or_create_user(user)
         if not user_obj:
             raise GetUserException
         
 
-    def choose_room_name(self):
-        rooms_list_data_response: list[Room] = ProxyRoom.get_rooms()
+    async def choose_room_name(self):
+        rooms_list_data_response: list[Room] = await ProxyRoom.get_rooms()
         if not rooms_list_data_response:
             log.error("Thre are no rooms")
             raise GetRoomException
@@ -41,7 +41,7 @@ class ChatBLV2:
 
     async def chat_client(self):
     
-        self.init_username_and_room()
+        await self.init_username_and_room()
         log.info(f"{self.username} Welcome to My chat")
         
         while True:
@@ -51,10 +51,8 @@ class ChatBLV2:
                 async with connect(websocket_url_with_params) as websocket:
                     while(True):
                         new_msg = input("Please insert your message:")
-                        await websocket.send(new_msg)
-                        # new_msg = input("Please insert your message:")
+                        await websocket.send(new_msg)      
                         msg_received = await asyncio.wait_for(websocket.recv(), timeout=10)
-                        # msg_received = await websocket.recv()
                         log.info(msg_received)            
             except Exception as e:
                 log.warning(f"Websocket connection failed, error: {e}. Retrying reconnect in 1 second ...")

@@ -5,7 +5,7 @@ from utils import Message, Room, GetMsgException, GetRoomException, SendMsgExcep
 from constants import GET_MSG_URL, SEND_MSG_URL, GET_USER_URL, GET_ROOMS_URL
 
 class ProxyMsg:
-    def get_messages(username: str) -> list[Message]:
+    async def get_messages(username: str) -> list[Message]:
         """
         :return: list of messages or empty list case no messages
         :exception: GetMsgException
@@ -15,7 +15,7 @@ class ProxyMsg:
         try:
             request_params = {"username": username}
             resp = requests.get(url=GET_MSG_URL, params=request_params, timeout=60, allow_redirects=False)
-        except requests.ConnectionError as e:
+        except requests.ConnectionError:
             log.error("Server Connection Error")
             raise
         
@@ -27,7 +27,7 @@ class ProxyMsg:
         else:
             return resp.text
     
-    def send_message(msg: Message):
+    async def send_message(msg: Message):
         """
         send a new message
         """
@@ -44,7 +44,7 @@ class ProxyMsg:
             raise SendMsgException("Sorry, Invalid message")
 
 class ProxyUser:
-    def get_or_create_user(user: User):
+    async def get_or_create_user(user: User):
         """
         get or craete a new user
         """
@@ -53,7 +53,7 @@ class ProxyUser:
         json_compatible_user_data: dict = jsonable_encoder(user)
         try:
             resp = requests.post(url=GET_USER_URL, json=json_compatible_user_data, timeout=60, allow_redirects=False)
-        except requests.ConnectionError as e:
+        except requests.ConnectionError:
             log.error("Server Connection Error")
             raise
         if resp.status_code == 422:
@@ -62,7 +62,7 @@ class ProxyUser:
 
 
 class ProxyRoom:
-    def get_rooms() -> list[Room]:
+    async def get_rooms() -> list[Room]:
         """
         :return: list of rooms or empty list case no rooms
         :exception: GetMsgException
@@ -71,7 +71,7 @@ class ProxyRoom:
         
         try:
             rooms_list_res = requests.get(url=GET_ROOMS_URL, timeout=60, allow_redirects=False)
-        except requests.ConnectionError as e:
+        except requests.ConnectionError:
             log.error("Server Connection Error")
             raise
             

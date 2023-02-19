@@ -1,8 +1,17 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship, DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase
 
 class Base(DeclarativeBase):
     pass
+
+class Room(Base):
+    __tablename__ = "rooms"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(50), unique=True, index=True, nullable=False)
+    
+    def __repr__(self):
+        return f"room: {self.name}"
 
 class User(Base):
     __tablename__ = "users"
@@ -25,12 +34,3 @@ class Message(Base):
 
     def __repr__(self):
         return f"message: {self.message}"
-
-class Room(Base):
-    __tablename__ = "rooms"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(50), unique=True, index=True, nullable=False)
-    
-    def __repr__(self):
-        return f"room: {self.name}"
