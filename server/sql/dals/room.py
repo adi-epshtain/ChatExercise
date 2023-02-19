@@ -24,7 +24,7 @@ class RoomDal:
     def create_room(name: str):
         db_room = Room(name=name)
         session.add(db_room)
-        session.commit()
-        session.refresh(db_room)
+        session.commit() # flush changes to the database
+        
         return db_room
 

@@ -28,6 +28,5 @@ class UserDal:
     def create_user(username: str, room_id: int):
         db_user = User(username=username, room_id=room_id)
         session.add(db_user)
-        session.commit()
-        session.refresh(db_user)
+        session.commit() # flush changes to the database
         return db_user

@@ -1,5 +1,5 @@
 from logger import log
-import requests
+from asyncio import requests
 from fastapi.encoders import jsonable_encoder
 from utils import Message, Room, GetMsgException, GetRoomException, SendMsgException, User
 from constants import GET_MSG_URL, SEND_MSG_URL, GET_USER_URL, GET_ROOMS_URL
@@ -14,7 +14,7 @@ class ProxyMsg:
         
         try:
             request_params = {"username": username}
-            resp = requests.get(url=GET_MSG_URL, params=request_params, timeout=60, allow_redirects=False)
+            resp = await requests.get(url=GET_MSG_URL, params=request_params, timeout=60, allow_redirects=False)
         except requests.ConnectionError:
             log.error("Server Connection Error")
             raise
@@ -36,7 +36,7 @@ class ProxyMsg:
         json_compatible_msg_data: dict = jsonable_encoder(msg)
         
         try:
-            resp = requests.post(url=SEND_MSG_URL, json=json_compatible_msg_data, timeout=60, allow_redirects=False)
+            resp = await requests.post(url=SEND_MSG_URL, json=json_compatible_msg_data, timeout=60, allow_redirects=False)
         except requests.ConnectionError as e:
             log.error("Server Connection Error")
             raise
@@ -52,7 +52,7 @@ class ProxyUser:
         
         json_compatible_user_data: dict = jsonable_encoder(user)
         try:
-            resp = requests.post(url=GET_USER_URL, json=json_compatible_user_data, timeout=60, allow_redirects=False)
+            resp = await requests.post(url=GET_USER_URL, json=json_compatible_user_data, timeout=60, allow_redirects=False)
         except requests.ConnectionError:
             log.error("Server Connection Error")
             raise
@@ -70,7 +70,7 @@ class ProxyRoom:
         log.debug(f"client send GET request with url {GET_ROOMS_URL}")
         
         try:
-            rooms_list_res = requests.get(url=GET_ROOMS_URL, timeout=60, allow_redirects=False)
+            rooms_list_res = await requests.get(url=GET_ROOMS_URL, timeout=60, allow_redirects=False)
         except requests.ConnectionError:
             log.error("Server Connection Error")
             raise

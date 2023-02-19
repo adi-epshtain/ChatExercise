@@ -17,7 +17,7 @@ class MessageDal:
     def create_message(username: str, room_id: int, message: str) -> Message:
         db_message = Message(message=message, username=username, room_id=room_id)
         session.add(db_message)
-        session.commit()
-        session.refresh(db_message)
+        
+        session.commit() # flush changes to the database
         return db_message
 

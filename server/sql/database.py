@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, 
 from sqlalchemy.orm import sessionmaker
 from logger import log
 from constants import PRODUCTION
+from .models import Room, User, Message
 
 
 class SessionManager(object):
@@ -20,7 +21,8 @@ class SessionManager(object):
             log.debug(f"SessionManager after init & prepare_models")
       
     def _prepare_models(self):
-      
+        
+        # Create a new MetaData object to store table metadata
         metadata = MetaData()
         
         log.debug(f"prepare_models process")
@@ -30,7 +32,7 @@ class SessionManager(object):
         Column('id', Integer, primary_key = True, index=True), 
         Column('name', String(50), unique=True, index=True, nullable=False), 
         )
-    
+        
         Table(
         'users', metadata, 
         Column('id', Integer, primary_key = True, index=True), 
